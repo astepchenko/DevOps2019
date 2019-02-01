@@ -1,0 +1,36 @@
+# It is how to configure ip masquerading with firewalld
+
+# turning firewalld on
+systemctl start firewalld
+systemctl enable firewalld
+
+# change zone
+firewall-cmd --get-active-zone
+nmcli c mod enp0s8 connection.zone internal
+nmcli c mod enp0s3 connection.zone external
+firewall-cmd --get-active-zone
+
+# set up ip masquerading
+firewall-cmd --zone=external --add-masquerade --permanent
+firewall-cmd --reload
+firewall-cmd --zone=external --query-masquerade
+
+# check ip forwarding state (1 - enabled)
+cat /proc/sys/net/ipv4/ip_forward
+
+# install DNS forwarder
+yum install -y dnsmasq
+systemctl start dnsmasq
+systemctl enable dnsmasq
+
+# allow DNS service
+firewall-cmd --zone=internal --add-service=dns --permanent
+firewall-cmd --reload
+
+# block internet access to centos-vm3
+firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -s 192.168.55.33 -j DROP
+firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -d 192.168.55.33 -j DROP
+firewall-cmd --reload
+
+# check direct rules
+firewall-cmd --direct --get-all-rules
