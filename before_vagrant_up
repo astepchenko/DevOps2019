@@ -1,0 +1,2 @@
+# Create the RSA key pair in Vagrant home directory
+ssh-keygen -t rsa -f ~/Vagrant/id_rsa -C vagrant@vagrant -q -N ''
