@@ -1,0 +1,1 @@
+Open http://localhost:8080/test/ in your browser and reload the page a few times
