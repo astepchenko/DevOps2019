@@ -18,9 +18,9 @@ Vagrant.configure("2") do |config|
     inline: <<-SHELL
       grep -q "192.168.0.11 srv1" /etc/hosts || echo "192.168.0.11 srv1" | sudo tee -a /etc/hosts > /dev/null
       grep -q "192.168.0.12 srv2" /etc/hosts || echo "192.168.0.12 srv2" | sudo tee -a /etc/hosts > /dev/null
-      echo "$(hostname) /etc/hosts"
-      echo "====="; cat /etc/hosts; echo "====="
-      echo "Copying public SSH keys to the VM"
+      echo "=== $(hostname) /etc/hosts ==="
+      cat /etc/hosts
+      echo "=== Copying public SSH keys to the VM ==="
       mkdir -p /home/vagrant/.ssh
       chmod 700 /home/vagrant/.ssh
       grep -q "vagrant@vagrant" /home/vagrant/.ssh/authorized_keys || echo "#{public_key}" >> /home/vagrant/.ssh/authorized_keys
@@ -29,9 +29,9 @@ Vagrant.configure("2") do |config|
       echo "StrictHostKeyChecking no" >> /home/vagrant/.ssh/config
       echo "UserKnownHostsFile /dev/null" >> /home/vagrant/.ssh/config
       chmod -R 600 /home/vagrant/.ssh/config
-      echo "SSH config"
+      echo "=== SSH config ==="
       cat /home/vagrant/.ssh/config
-      echo "SSH authorized_keys"
+      echo "=== SSH authorized_keys ==="
       cat /home/vagrant/.ssh/authorized_keys
     SHELL
 end
