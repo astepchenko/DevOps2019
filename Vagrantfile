@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
     inline: <<-SHELL
       grep -q "192.168.0.11 srv1" /etc/hosts || echo "192.168.0.11 srv1" | tee -a /etc/hosts > /dev/null
       grep -q "192.168.0.12 srv2" /etc/hosts || echo "192.168.0.12 srv2" | tee -a /etc/hosts > /dev/null
-      echo "$(hostname) /etc/hosts"
-      echo "====="; cat /etc/hosts; echo "====="
+      echo "=== $(hostname) /etc/hosts ==="
+      cat /etc/hosts
     SHELL
 end
