@@ -1,0 +1,9 @@
+# Set UID and GID for Windows NFS Client
+REG ADD HKLM\SOFTWARE\Microsoft\ClientForNFS\CurrentVersion\Default /v AnonymousUid /t REG_DWORD /d 1001 /f
+REG ADD HKLM\SOFTWARE\Microsoft\ClientForNFS\CurrentVersion\Default /v AnonymousGid /t REG_DWORD /d 1001 /f
+
+# Mount NFS drive
+mount -o anon 10.0.2.4:/git X:
+
+# Unmount NFS drive
+umount X:

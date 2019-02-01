@@ -1,0 +1,33 @@
+# create user toor and change password
+adduser toor
+passwd toor
+
+# create folder for git
+mkdir /git
+
+# install git
+yum -y install git
+
+# clone repository to local folder
+cd /git
+git clone https://github.com/astepchenko/DevOps2019
+
+# change owner
+chown -R toor:toor /git
+
+# install NFS server
+yum -y install nfs-utils
+
+# write settings for NFS exports
+vi /etc/exports
+=================================================
+/git 10.0.2.0/24(rw,no_root_squash,no_all_squash)
+=================================================
+
+# start and enable NFS service
+systemctl start rpcbind nfs-server
+systemctl enable rpcbind nfs-server
+
+# allow services
+firewall-cmd --add-service={nfs,mountd,rpc-bind} --permanent
+firewall-cmd --reload

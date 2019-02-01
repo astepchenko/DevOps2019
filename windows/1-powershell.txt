@@ -1,0 +1,4 @@
+# Enable NFS Client
+Get-WindowsOptionalFeature -Online
+Enable-WindowsOptionalFeature -Online -FeatureName "ClientForNFS-Infrastructure" -All
+Enable-WindowsOptionalFeature -Online -FeatureName "NFS-Administration" -All
