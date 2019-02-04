@@ -1,5 +1,5 @@
-prefix = "tomcat"
 tomcat_count = 3
+prefix = "tomcat"
 baseip = "192.168.0"
 
 $script_hosts = <<-SCRIPT
