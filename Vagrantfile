@@ -28,7 +28,7 @@ $script_master = <<-SCRIPT
 
   cp /vagrant/mod_jk.so /etc/httpd/modules/
 
-  #generate httpd.conf
+  #generating httpd.conf
   grep -q "LoadModule jk_module modules/mod_jk.so" /etc/httpd/conf/httpd.conf || echo "LoadModule jk_module modules/mod_jk.so" | tee -a /etc/httpd/conf/httpd.conf
   grep -q "JkWorkersFile conf/workers.properties" /etc/httpd/conf/httpd.conf || echo "JkWorkersFile conf/workers.properties" | tee -a /etc/httpd/conf/httpd.conf
   grep -q "JkShmFile /tmp/shm" /etc/httpd/conf/httpd.conf || echo "JkShmFile /tmp/shm" | tee -a /etc/httpd/conf/httpd.conf
@@ -36,7 +36,7 @@ $script_master = <<-SCRIPT
   grep -q "JkLogLevel info" /etc/httpd/conf/httpd.conf || echo "JkLogLevel info" | tee -a /etc/httpd/conf/httpd.conf
   grep -q "JkMount /test* lb" /etc/httpd/conf/httpd.conf || echo "JkMount /test* lb" | tee -a /etc/httpd/conf/httpd.conf
 
-  #generate workers.properties
+  #generating workers.properties
   echo "worker.list=lb" > /etc/httpd/conf/workers.properties
   echo "worker.lb.type=lb" >> /etc/httpd/conf/workers.properties
   string="worker.lb.balance_workers=worker1"
