@@ -1,5 +1,4 @@
 plugins {
-//  id 'java'
 }
 
 repositories {
@@ -25,20 +24,24 @@ task sorting {
       '1.1.15'
     ]
 
-    println '=== Incrementing version'
-    println 'Version before ' + version
-    def parser = /(?<major>\d+).(?<minor>\d+).(?<patch>\d+)/
-    def match = version =~ parser
-    if ( match.matches () ) {
-      def (major, minor, patch) = ['major', 'minor', 'patch'].collect { match.group (it) }
-      patch = (patch as Integer) + 1
-      def newversion = major + '.' + minor + '.' + patch
-      println 'Version after ' + newversion
-      println 'Adding new version to gradle.properties'
-      def file = new File ('gradle.properties')
-      file.write ('version=' + newversion)
+    def versionComparator = { a, b ->
+      def TOKEN = /./
+      a = a.tokenize(TOKEN)
+      b = b.tokenize(TOKEN)
+      println 'a= ' + a + ', b= ' + b // todo delete
+
+      for (i in 0..2) {
+        int c = (a[i] as int) <=> (b[i] as int)
+        if (c != 0) {
+          return c
+        }
+      }
+      return 0
     }
 
-    println unsortedArray
+    def sortedArray = unsortedArray
+    println 'unsortedArray: ' + unsortedArray
+    sortedArray.sort(versionComparator)
+    println 'sortedArray:   ' + sortedArray
   }
 }
