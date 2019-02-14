@@ -1,0 +1,44 @@
+plugins {
+//  id 'java'
+}
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  jcenter()
+}
+
+dependencies {
+//  compile group: 'log4j', name: 'log4j', version: '1.2.17'
+//  compile group: 'commons-io', name: 'commons-io', version: '2.6'
+}
+
+task sorting {
+  doLast {
+    // unsorted array of versions
+    def unsortedArray = [
+      '1.1.3',
+      '1.1.0',
+      '1.10.2',
+      '1.9.1',
+      '1.1.8',
+      '1.1.15'
+    ]
+
+    println '=== Incrementing version'
+    println 'Version before ' + version
+    def parser = /(?<major>\d+).(?<minor>\d+).(?<patch>\d+)/
+    def match = version =~ parser
+    if ( match.matches () ) {
+      def (major, minor, patch) = ['major', 'minor', 'patch'].collect { match.group (it) }
+      patch = (patch as Integer) + 1
+      def newversion = major + '.' + minor + '.' + patch
+      println 'Version after ' + newversion
+      println 'Adding new version to gradle.properties'
+      def file = new File ('gradle.properties')
+      file.write ('version=' + newversion)
+    }
+
+    println unsortedArray
+  }
+}
