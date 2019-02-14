@@ -1,32 +1,27 @@
 task sorting {
-  doLast {
-    // unsorted array of versions
-    def unsortedArray = [
-      '1.1.3',
-      '1.1.0',
-      '1.10.2',
-      '1.9.1',
-      '1.1.8',
-      '1.1.15'
-    ]
-    def sortedArray = unsortedArray
-
-    def versionComparator = { a, b ->
-      def TOKEN = /./
-      a = a.tokenize(TOKEN)
-      b = b.tokenize(TOKEN)
-
-      for (i in 0..2) {
-        int c = (a[i] as int) <=> (b[i] as int)
-        if (c != 0) {
-          return c
-        }
+  // unsorted array of versions
+  def unsortedArray = [
+    '1.1.3',
+    '1.1.0',
+    '1.10.2',
+    '1.9.1',
+    '1.1.8',
+    '1.1.15'
+  ]
+  def sortedArray = unsortedArray
+  def versionComparator = { a, b ->
+    def TOKEN = /./
+    a = a.tokenize(TOKEN)
+    b = b.tokenize(TOKEN)
+    for (i in 0..2) {
+      int c = (a[i] as int) <=> (b[i] as int)
+      if (c != 0) {
+        return c
       }
-      return 0
     }
-
-    println 'unsortedArray: ' + unsortedArray
-    sortedArray.sort(versionComparator)
-    println 'sortedArray:   ' + sortedArray
+    return 0
   }
+  println 'unsortedArray: ' + unsortedArray
+  sortedArray.sort(versionComparator)
+  println 'sortedArray:   ' + sortedArray
 }
