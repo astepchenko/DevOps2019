@@ -17,11 +17,12 @@ dependencies {
 }
 
 war {
-  dependsOn 'release'
+  dependsOn 'arelease'
   archiveName = 'greeter.war'
 }
 
-task release {
+task arelease {
+  dependsOn 'processResources'
   doLast {
     println '=== Building release version ' + version
     println '=== Run \'./gradlew increment\' to update version'
