@@ -1,2 +1,4 @@
 build/
 .gradle/
+.vagrant/
+nexus-latest-bundle.tar.gz
