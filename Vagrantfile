@@ -3,13 +3,13 @@ prefix = "tomcat"
 baseip = "192.168.0"
 
 $script_hosts = <<-SCRIPT
-  grep -q "192.168.0.10" /etc/hosts || echo "192.168.0.10 master" | tee -a /etc/hosts > /dev/null
+  grep -q '192.168.0.10' /etc/hosts || echo '192.168.0.10 master' | tee -a /etc/hosts > /dev/null
   for x in {11..#{10+tomcat_count}}; do
     grep -q #{baseip}.${x} /etc/hosts || {
       echo #{baseip}.${x} #{prefix}${x##?} | sudo tee -a /etc/hosts > /dev/null
     }
   done
-  echo "=== $(hostname) /etc/hosts ==="
+  echo '=== $(hostname) /etc/hosts ==='
   cat /etc/hosts
 SCRIPT
 
@@ -50,30 +50,29 @@ $script_master = <<-SCRIPT
 
   yum install -y httpd
   systemctl enable httpd
-  # systemctl restart httpd
   cp /vagrant/mod_jk.so /etc/httpd/modules/
   # generating httpd.conf
-  grep -q "LoadModule jk_module modules/mod_jk.so" /etc/httpd/conf/httpd.conf || echo "LoadModule jk_module modules/mod_jk.so" | tee -a /etc/httpd/conf/httpd.conf
-  grep -q "JkWorkersFile conf/workers.properties" /etc/httpd/conf/httpd.conf || echo "JkWorkersFile conf/workers.properties" | tee -a /etc/httpd/conf/httpd.conf
-  grep -q "JkShmFile /tmp/shm" /etc/httpd/conf/httpd.conf || echo "JkShmFile /tmp/shm" | tee -a /etc/httpd/conf/httpd.conf
-  grep -q "JkLogFile logs/mod_jk.log" /etc/httpd/conf/httpd.conf || echo "JkLogFile logs/mod_jk.log" | tee -a /etc/httpd/conf/httpd.conf
-  grep -q "JkLogLevel info" /etc/httpd/conf/httpd.conf || echo "JkLogLevel info" | tee -a /etc/httpd/conf/httpd.conf
-  grep -q "JkMount /jkmanager* status" /etc/httpd/conf/httpd.conf || echo "JkMount /jkmanager* status" | tee -a /etc/httpd/conf/httpd.conf
+  grep -q 'LoadModule jk_module modules/mod_jk.so' /etc/httpd/conf/httpd.conf || echo 'LoadModule jk_module modules/mod_jk.so' | tee -a /etc/httpd/conf/httpd.conf
+  grep -q 'JkWorkersFile conf/workers.properties' /etc/httpd/conf/httpd.conf || echo 'JkWorkersFile conf/workers.properties' | tee -a /etc/httpd/conf/httpd.conf
+  grep -q 'JkShmFile /tmp/shm' /etc/httpd/conf/httpd.conf || echo 'JkShmFile /tmp/shm' | tee -a /etc/httpd/conf/httpd.conf
+  grep -q 'JkLogFile logs/mod_jk.log' /etc/httpd/conf/httpd.conf || echo 'JkLogFile logs/mod_jk.log' | tee -a /etc/httpd/conf/httpd.conf
+  grep -q 'JkLogLevel info' /etc/httpd/conf/httpd.conf || echo 'JkLogLevel info' | tee -a /etc/httpd/conf/httpd.conf
+  grep -q 'JkMount /jkmanager* status' /etc/httpd/conf/httpd.conf || echo 'JkMount /jkmanager* status' | tee -a /etc/httpd/conf/httpd.conf
   # generating workers.properties
-  echo "worker.list=lb, status" > /etc/httpd/conf/workers.properties
-  echo "worker.lb.type=lb" >> /etc/httpd/conf/workers.properties
-  echo "worker.status.type=status" >> /etc/httpd/conf/workers.properties
-  string="worker.lb.balance_workers=worker1"
+  echo 'worker.list=lb, status' > /etc/httpd/conf/workers.properties
+  echo 'worker.lb.type=lb' >> /etc/httpd/conf/workers.properties
+  echo 'worker.status.type=status' >> /etc/httpd/conf/workers.properties
+  string='worker.lb.balance_workers=worker1'
   for x in {2..#{tomcat_count}}; do
-    string=$string", worker"$x
+    string=$string', worker'$x
   done
   echo $string  >> /etc/httpd/conf/workers.properties
   for x in {1..#{tomcat_count}}; do
-    echo "worker.worker${x}.host=#{prefix}${x-10}" >> /etc/httpd/conf/workers.properties
-    echo "worker.worker${x}.port=8009" >> /etc/httpd/conf/workers.properties
-    echo "worker.worker${x}.type=ajp13" >> /etc/httpd/conf/workers.properties
+    echo 'worker.worker${x}.host=#{prefix}${x-10}' >> /etc/httpd/conf/workers.properties
+    echo 'worker.worker${x}.port=8009' >> /etc/httpd/conf/workers.properties
+    echo 'worker.worker${x}.type=ajp13' >> /etc/httpd/conf/workers.properties
   done
-  echo "=== $(hostname) /etc/httpd/conf/workers.properties ==="
+  echo '=== $(hostname) /etc/httpd/conf/workers.properties ==='
   cat /etc/httpd/conf/workers.properties
   systemctl restart httpd
 SCRIPT
