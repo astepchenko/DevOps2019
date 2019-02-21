@@ -20,8 +20,8 @@ $script_tomcat = <<-SCRIPT
 SCRIPT
 
 $script_master = <<-SCRIPT
-  yum install -y java-1.8.0-openjdk
-
+  yum install -y git java-1.8.0-openjdk-devel
+ 
   curl --silent --location http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo | tee /etc/yum.repos.d/jenkins.repo
   rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
   yum install -y jenkins
