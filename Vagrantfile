@@ -59,18 +59,18 @@ $script_master = <<-SCRIPT
   grep -q 'JkLogLevel info' /etc/httpd/conf/httpd.conf || echo 'JkLogLevel info' | tee -a /etc/httpd/conf/httpd.conf
   grep -q 'JkMount /jkmanager* status' /etc/httpd/conf/httpd.conf || echo 'JkMount /jkmanager* status' | tee -a /etc/httpd/conf/httpd.conf
   # generating workers.properties
-  echo 'worker.list=lb, status' > /etc/httpd/conf/workers.properties
-  echo 'worker.lb.type=lb' >> /etc/httpd/conf/workers.properties
-  echo 'worker.status.type=status' >> /etc/httpd/conf/workers.properties
-  string='worker.lb.balance_workers=worker1'
+  echo "worker.list=lb, status" > /etc/httpd/conf/workers.properties
+  echo "worker.lb.type=lb" >> /etc/httpd/conf/workers.properties
+  echo "worker.status.type=status" >> /etc/httpd/conf/workers.properties
+  string="worker.lb.balance_workers=worker1"
   for x in {2..#{tomcat_count}}; do
-    string=$string', worker'$x
+    string=$string", worker"$x
   done
   echo $string  >> /etc/httpd/conf/workers.properties
   for x in {1..#{tomcat_count}}; do
-    echo 'worker.worker${x}.host=#{prefix}${x-10}' >> /etc/httpd/conf/workers.properties
-    echo 'worker.worker${x}.port=8009' >> /etc/httpd/conf/workers.properties
-    echo 'worker.worker${x}.type=ajp13' >> /etc/httpd/conf/workers.properties
+    echo "worker.worker${x}.host=#{prefix}${x-10}" >> /etc/httpd/conf/workers.properties
+    echo "worker.worker${x}.port=8009" >> /etc/httpd/conf/workers.properties
+    echo "worker.worker${x}.type=ajp13" >> /etc/httpd/conf/workers.properties
   done
   echo '=== $(hostname) /etc/httpd/conf/workers.properties ==='
   cat /etc/httpd/conf/workers.properties
