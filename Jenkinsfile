@@ -22,7 +22,6 @@ node {
 
     stage('Clone sources') {
         git branch: 'task6', url: 'https://github.com/astepchenko/DevOps2019.git'
-        pwd()
     }
 
     stage('Gradle build') {
@@ -47,17 +46,17 @@ node {
     stage('Upload to tomcat1') {
         sshCommand remote: tomcat1, command: "curl -s ${repo}/${version}/${filename} -o /home/vagrant/${filename}"
         sshCommand remote: tomcat1, command: "curl 'http://192.168.0.10/jkmanager/?cmd=update&from=list&w=lb&sw=worker1&vwa=1'"
-        sshCommand remote: tomcat1, sudo: true, command: "mv -f /home/vagrant/${filename} /usr/share/tomcat/webapps/"
-        sshCommand remote: tomcat1, command: "curl -s 'http://localhost:8080/${appname}/' | grep -q ${version} && echo 'Build successfull' || echo 'Build failed'"
+        sshCommand remote: tomcat1, sudo: true, command: "mv -f /home/vagrant/${filename} /usr/share/tomcat/webapps/ && sleep 5"
+        sshCommand remote: tomcat1, command: "curl -s 'http://localhost:8080/${appname}/' | grep -q ${version} && echo 'tomcat1 deploy successfull' || echo 'tomcat1 deploy failed'"
         sshCommand remote: tomcat1, command: "curl 'http://192.168.0.10/jkmanager/?cmd=update&from=list&w=lb&sw=worker1&vwa=0'"
     }
 
     stage('Upload to tomcat2') {
         sshCommand remote: tomcat2, command: "curl -s ${repo}/${version}/${filename} -o /home/vagrant/${filename}"
-        sshCommand remote: tomcat2, command: "curl 'http://192.168.0.10/jkmanager/?cmd=update&from=list&w=lb&sw=worker1&vwa=1'"
-        sshCommand remote: tomcat2, sudo: true, command: "mv -f /home/vagrant/${filename} /usr/share/tomcat/webapps/"
-        sshCommand remote: tomcat2, command: "curl -s 'http://localhost:8080/${appname}/' | grep -q ${version} && echo 'Build successfull' || echo 'Build failed'"
-        sshCommand remote: tomcat2, command: "curl 'http://192.168.0.10/jkmanager/?cmd=update&from=list&w=lb&sw=worker1&vwa=0'"
+        sshCommand remote: tomcat2, command: "curl 'http://192.168.0.10/jkmanager/?cmd=update&from=list&w=lb&sw=worker2&vwa=1'"
+        sshCommand remote: tomcat2, sudo: true, command: "mv -f /home/vagrant/${filename} /usr/share/tomcat/webapps/ && sleep 5"
+        sshCommand remote: tomcat2, command: "curl -s 'http://localhost:8080/${appname}/' | grep -q ${version} && echo 'tomcat2 deploy successfull' || echo 'tomcat2 deploy failed'"
+        sshCommand remote: tomcat2, command: "curl 'http://192.168.0.10/jkmanager/?cmd=update&from=list&w=lb&sw=worker2&vwa=0'"
     }
 
     stage('Commit and push to github') {
@@ -75,4 +74,3 @@ node {
     }
 
 }
-
