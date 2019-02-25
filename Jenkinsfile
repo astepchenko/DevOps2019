@@ -5,18 +5,7 @@ def filename = 'greeter.war'
 def appname = 'greeter'
 
 def tomcat1 = [:]
-tomcat1.name = 'tomcat1'
-tomcat1.host = '192.168.0.11'
-tomcat1.allowAnyHosts = true
-tomcat1.user = 'vagrant'
-tomcat1.password = 'vagrant'
-
 def tomcat2 = [:]
-tomcat2.name = 'tomcat2'
-tomcat2.host = '192.168.0.12'
-tomcat2.allowAnyHosts = true
-tomcat2.user = 'vagrant'
-tomcat2.password = 'vagrant'
 
 node {
 
@@ -40,23 +29,41 @@ node {
     }
 
     stage('Upload to repo') {
-        sh "curl -XPUT -u admin:admin123 -T ${builddir}/${filename} ${repo}/${version}/${filename}"
+        withCredentials([usernamePassword(credentialsId: 'nexusCreds', passwordVariable: 'nPASS', usernameVariable: 'nUSER')]) {
+            sh "curl -XPUT -u ${nUSER}:${nPASS} -T ${builddir}/${filename} ${repo}/${version}/${filename}"
+        }
     }
 
     stage('Upload to tomcat1') {
-        sshCommand remote: tomcat1, command: "curl -s ${repo}/${version}/${filename} -o /home/vagrant/${filename}"
-        sshCommand remote: tomcat1, command: "curl 'http://192.168.0.10/jkmanager/?cmd=update&from=list&w=lb&sw=worker1&vwa=1'"
-        sshCommand remote: tomcat1, sudo: true, command: "mv -f /home/vagrant/${filename} /usr/share/tomcat/webapps/ && sleep 10"
-        sshCommand remote: tomcat1, command: "curl -s 'http://localhost:8080/${appname}/' | grep -q ${version} && echo 'tomcat1 deploy successfull' || echo 'tomcat1 deploy failed'"
-        sshCommand remote: tomcat1, command: "curl 'http://192.168.0.10/jkmanager/?cmd=update&from=list&w=lb&sw=worker1&vwa=0'"
+        withCredentials([usernamePassword(credentialsId: 'vagrantCreds', passwordVariable: 'vPASS', usernameVariable: 'vUSER')]) {
+            tomcat1.name = 'tomcat1'
+            tomcat1.host = '192.168.0.11'
+            tomcat1.allowAnyHosts = true
+            tomcat1.user = "${vUSER}"
+            tomcat1.password = "${vPASS}"
+            sshCommand remote: tomcat1, command: "curl -s ${repo}/${version}/${filename} -o /home/vagrant/${filename}"
+            sshCommand remote: tomcat1, sudo: true, command: "mv -f /usr/share/tomcat/webapps/${filename} /home/vagrant/${filename}.bak"
+            sshCommand remote: tomcat1, command: "curl 'http://192.168.0.10/jkmanager/?cmd=update&from=list&w=lb&sw=worker1&vwa=1'"
+            sshCommand remote: tomcat1, sudo: true, command: "mv -f /home/vagrant/${filename} /usr/share/tomcat/webapps/ && sleep 10"
+            sshCommand remote: tomcat1, sudo: true, command: "curl -s 'http://localhost:8080/${appname}/' | grep -q ${version} && ( echo 'tomcat1 deploy successfull'; rm -f /home/vagrant/${filename}.bak ) || ( echo 'tomcat1 deploy failed, rolling back'; mv -f /home/vagrant/${filename}.bak /usr/share/tomcat/webapps/${filename}; sleep 10 )"
+            sshCommand remote: tomcat1, command: "curl 'http://192.168.0.10/jkmanager/?cmd=update&from=list&w=lb&sw=worker1&vwa=0'"
+        }
     }
 
     stage('Upload to tomcat2') {
-        sshCommand remote: tomcat2, command: "curl -s ${repo}/${version}/${filename} -o /home/vagrant/${filename}"
-        sshCommand remote: tomcat2, command: "curl 'http://192.168.0.10/jkmanager/?cmd=update&from=list&w=lb&sw=worker2&vwa=1'"
-        sshCommand remote: tomcat2, sudo: true, command: "mv -f /home/vagrant/${filename} /usr/share/tomcat/webapps/ && sleep 10"
-        sshCommand remote: tomcat2, command: "curl -s 'http://localhost:8080/${appname}/' | grep -q ${version} && echo 'tomcat2 deploy successfull' || echo 'tomcat2 deploy failed'"
-        sshCommand remote: tomcat2, command: "curl 'http://192.168.0.10/jkmanager/?cmd=update&from=list&w=lb&sw=worker2&vwa=0'"
+        withCredentials([usernamePassword(credentialsId: 'vagrantCreds', passwordVariable: 'vPASS', usernameVariable: 'vUSER')]) {
+            tomcat2.name = 'tomcat2'
+            tomcat2.host = '192.168.0.12'
+            tomcat2.allowAnyHosts = true
+            tomcat2.user = "${vUSER}"
+            tomcat2.password = "${vPASS}"
+            sshCommand remote: tomcat2, command: "curl -s ${repo}/${version}/${filename} -o /home/vagrant/${filename}"
+            sshCommand remote: tomcat2, sudo: true, command: "mv -f /usr/share/tomcat/webapps/${filename} /home/vagrant/${filename}.bak"
+            sshCommand remote: tomcat2, command: "curl 'http://192.168.0.10/jkmanager/?cmd=update&from=list&w=lb&sw=worker1&vwa=1'"
+            sshCommand remote: tomcat2, sudo: true, command: "mv -f /home/vagrant/${filename} /usr/share/tomcat/webapps/ && sleep 10"
+            sshCommand remote: tomcat2, sudo: true, command: "curl -s 'http://localhost:8080/${appname}/' | grep -q ${version} && ( echo 'tomcat2 deploy successfull'; rm -f /home/vagrant/${filename}.bak ) || ( echo 'tomcat2 deploy failed, rolling back'; mv -f /home/vagrant/${filename}.bak /usr/share/tomcat/webapps/${filename}; sleep 10 )"
+            sshCommand remote: tomcat2, command: "curl 'http://192.168.0.10/jkmanager/?cmd=update&from=list&w=lb&sw=worker1&vwa=0'"
+        }
     }
 
     stage('Commit and push to github') {
