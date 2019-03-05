@@ -1,0 +1,6 @@
+FROM centos
+LABEL maintainer="Aleksandr Stepchenko"
+RUN yum install -y epel-release && \
+    yum update -y && \
+    yum install -y collectd && \
+    yum clean all
