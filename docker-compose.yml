@@ -22,7 +22,7 @@ services:
       - /var/lib/influxdb
       - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
       - ./influxdb/types.db:/usr/share/collectd/types.db:ro
-      - ./influxdb/collectd.sh:/docker-entrypoint-initdb.d/create_db_collectd.sh
+      - ./influxdb/create_db_collectd.sh:/docker-entrypoint-initdb.d/create_db_collectd.sh
 
   grafana:
     build: 
