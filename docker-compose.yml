@@ -1,30 +1,32 @@
 version: '3'
 
 services:
+
   collectd:
     build: 
-      context: .
-      dockerfile: Dockerfile-collectd
+      context: ./collectd
     container_name: collectd
-    privileged: true
     network_mode: host
     volumes:
-      - /proc:/mnt/proc:ro
-      - ./collectd.conf:/etc/collectd.conf
-    tty: true
+      - ./collectd/collectd.conf:/etc/collectd.conf
+
   influxdb:
     image: influxdb
     container_name: influxdb
     ports:
       - "8086:8086"
       - "25826:25826/udp"
+#    environment:
+#      INFLUXDB_DB: collectd
     volumes:
       - /var/lib/influxdb
-      - ./collectd.sh:/docker-entrypoint-initdb.d/collectd.sh
-      - ./influxdb.conf:/etc/influxdb/influxdb.conf:ro
-      - ./types.db:/usr/share/collectd/types.db:ro
+      - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+      - ./influxdb/types.db:/usr/share/collectd/types.db:ro
+      - ./influxdb/collectd.sh:/docker-entrypoint-initdb.d/create_db_collectd.sh
+
   grafana:
-    image: grafana/grafana
+    build: 
+      context: ./grafana
     container_name: grafana
     ports:
       - "3000:3000"

@@ -1,3 +1,0 @@
-FROM influxdb
-LABEL maintainer="Aleksandr Stepchenko"
-RUN influx -execute 'CREATE DATABASE collectd'
