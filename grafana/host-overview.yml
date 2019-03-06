@@ -1,0 +1,9 @@
+apiVersion: 1
+
+providers:
+- name: 'host-overview'
+  folder: ''
+  type: file
+  updateIntervalSeconds: 10
+  options:
+    path: /usr/share/grafana/conf/provisioning/dashboards

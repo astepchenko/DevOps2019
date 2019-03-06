@@ -19,7 +19,6 @@ services:
 #    environment:
 #      INFLUXDB_DB: collectd
     volumes:
-      - /var/lib/influxdb
       - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
       - ./influxdb/types.db:/usr/share/collectd/types.db:ro
       - ./influxdb/create_db_collectd.sh:/docker-entrypoint-initdb.d/create_db_collectd.sh
@@ -31,4 +30,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - /var/lib/grafana
+      - /usr/share/grafana
+      - ./grafana/influxdb.yml:/usr/share/grafana/conf/provisioning/datasources/influxdb.yml
+      - ./grafana/host-overview.yml:/usr/share/grafana/conf/provisioning/dashboards/host-overview.yml
+      - ./grafana/host-overview.json:/usr/share/grafana/conf/provisioning/dashboards/host-overview.json
