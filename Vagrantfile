@@ -34,7 +34,7 @@ $script_master = <<-SCRIPT
 
   rm -r /opt/nexus*
   echo 'Installing nexus...'
-  # wget https://download.sonatype.com/nexus/oss/nexus-latest-bundle.tar.gz
+  wget -N https://download.sonatype.com/nexus/oss/nexus-latest-bundle.tar.gz -O /vagrant/nexus-latest-bundle.tar.gz
   tar xf /vagrant/nexus-latest-bundle.tar.gz -C /opt
   mv /opt/nexus-* /opt/nexus
   # adduser nexus
