@@ -7,6 +7,10 @@ services:
       context: ./stuff
     container_name: filebeat
     hostname: filebeat
+    ports:
+      - "80:80"
+    volumes:
+      - /var/log
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.6.1
