@@ -1,6 +1,6 @@
 FROM centos
 LABEL maintainer="Aleksandr Stepchenko"
-LABEL version=1.0
+LABEL version=1.1
 
 RUN yum install -y epel-release && \
     yum update -y && \
