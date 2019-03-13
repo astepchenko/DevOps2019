@@ -7,6 +7,7 @@ RUN yum update -y && \
     yum clean all
 
 ADD filebeat.yml /etc/filebeat/filebeat.yml
+RUN chmod go-w /etc/filebeat/filebeat.yml
 
 ENTRYPOINT ["filebeat"]
 CMD ["-e"]
