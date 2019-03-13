@@ -32,7 +32,7 @@ node {
     }
 
     stage('Build docker image') {
-        sh "docker build -t ${appname}:${version} --build-arg VERSION=${version}" .
+        sh "docker build -t ${appname}:${version} --build-arg VER=${version}" .
     }
 
 //    stage('Commit and push to github') {
