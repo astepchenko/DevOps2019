@@ -4,6 +4,7 @@ LABEL maintainer="Aleksandr Stepchenko"
 ARG VER
 
 RUN apk add --no-cache curl
-RUN curl -s http://localhost:8081/nexus/content/repositories/snapshots/task7a/${VER}/greeter.war -o /usr/local/tomcat/webapps/greeter.war
+RUN echo ${VER}
+RUN curl http://localhost:8081/nexus/content/repositories/snapshots/task7a/${VER}/greeter.war -o /usr/local/tomcat/webapps/greeter.war
 
 # EXPOSE 8080
