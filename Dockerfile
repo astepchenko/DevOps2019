@@ -5,6 +5,6 @@ ARG VERSION
 
 RUN apk add --no-cache curl
 RUN echo "${VERSION}"
-RUN curl "http://mate:8081/nexus/content/repositories/snapshots/task7a/${VERSION}/greeter.war" -o /usr/local/tomcat/webapps/greeter.war
+RUN curl -v "http://localhost:8081/nexus/content/repositories/snapshots/task7a/${VERSION}/greeter.war" -o /usr/local/tomcat/webapps/greeter.war
 
 # EXPOSE 8080
