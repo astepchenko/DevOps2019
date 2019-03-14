@@ -4,9 +4,8 @@ LABEL maintainer="Aleksandr Stepchenko"
 ARG VERSION
 
 RUN apk add --no-cache curl
-# RUN apk add --no-cache wget
-
-RUN curl "http://localhost:8081/nexus/content/repositories/snapshots/task7a/${VERSION}/greeter.war" -o /usr/local/tomcat/webapps/greeter.war
-# RUN wget -v "http://localhost:8081/nexus/content/repositories/snapshots/task7a/${VERSION}/greeter.war" -O /usr/local/tomcat/webapps/greeter.war
+RUN hostip=$(ip route show | awk '/default/ {print $3}')
+RUN echo $hostip
+RUN curl -v "http://$hostip:8081/nexus/content/repositories/snapshots/task7a/${VERSION}/greeter.war" -o /usr/local/tomcat/webapps/greeter.war
 
 # EXPOSE 8080
