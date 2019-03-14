@@ -46,11 +46,11 @@ node {
             sh "git config --global user.name 'Aleksandr Stepchenko'"
             sh "git add ."
             sh "git commit -m '${version}'"
-            sh "git push https://${USER}:${PASS}@github.com/astepchenko/DevOps2019.git task7a"
+            sh "git push https://${gUSER}:${gPASS}@github.com/astepchenko/DevOps2019.git task7a"
             sh "git checkout master"
             sh "git merge task7a"
             sh "git tag ${version}"
-            sh "git push https://${USER}:${PASS}@github.com/astepchenko/DevOps2019.git master --tags"
+            sh "git push https://${gUSER}:${gPASS}@github.com/astepchenko/DevOps2019.git master --tags"
         }
     }
 }
