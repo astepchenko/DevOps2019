@@ -36,7 +36,6 @@ node {
         sh "docker build -t ${appname}:${version} --build-arg VERSION=${version} ."
         sh "docker image tag ${appname}:${version} localhost:5000/${appname}:${version}"
         sh "docker push localhost:5000/${appname}:${version}"
-        sh "docker swarm init"
         sh "docker service ls | grep -q ${appname} && docker service update --image ${appname}:${version} ${appname} || docker service create --name ${appname} --publish 9090:8080 ${appname}:${version}"
         sh "curl -s 'http://${hostip}:9090/${appname}/' | grep -q ${version} && echo 'Deploy successfull' || echo 'Deploy failed'"
     }
