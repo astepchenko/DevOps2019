@@ -5,12 +5,15 @@ Vagrant.configure("2") do |config|
     end
     config.vm.define "chef" do |chef|
       chef.vm.network :private_network, ip: "192.168.0.10"
-      #chef.vm.network :forwarded_port, guest: 80, host: 8080
       chef.vm.hostname = "chef"
       chef.vm.provision "shell",
         inline: <<-SHELL
           rpm -Uvh /vagrant/chef-server-core-12.19.31-1.el7.x86_64.rpm
           chef-server-ctl reconfigure
+          chef-server-ctl user-create ryback Casey Ryback ryback@navy.us 'Seagal' --filename /home/vagrant/ryback.pem
+          chef-server-ctl org-create missouri 'USS Missouri' --association_user ryback --filename /home/vagrant/missouri-validator.pem
+          chef-server-ctl user-show
+          chef-server-ctl org-show
         SHELL
     end
     config.vm.define "node1" do |node1|
