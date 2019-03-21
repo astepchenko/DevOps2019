@@ -9,7 +9,8 @@ Vagrant.configure("2") do |config|
       chef.vm.hostname = "chef"
       chef.vm.provision "shell",
         inline: <<-SHELL
-          echo 'hello'
+          rpm -Uvh /vagrant/chef-server-core-12.19.31-1.el7.x86_64.rpm
+          chef-server-ctl reconfigure
         SHELL
     end
     config.vm.define "node1" do |node1|
@@ -17,11 +18,14 @@ Vagrant.configure("2") do |config|
       node1.vm.hostname = "node1"
       node1.vm.provision "shell",
         inline: <<-SHELL
-          echo 'hello'
+          yum install -y java-1.8.0-openjdk
         SHELL
     end
     config.vm.provision "shell",
       inline: <<-SHELL
-        echo 'hello'
+        grep -q "192.168.0.10 chef" /etc/hosts || echo "192.168.0.10 chef" | tee -a /etc/hosts > /dev/null
+        grep -q "192.168.0.11 node1" /etc/hosts || echo "192.168.0.11 node1" | tee -a /etc/hosts > /dev/null
+        echo "=== $(hostname) /etc/hosts ==="
+        cat /etc/hosts
       SHELL
   end
