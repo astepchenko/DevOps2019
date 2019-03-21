@@ -9,9 +9,7 @@ Vagrant.configure("2") do |config|
       chef.vm.hostname = "chef"
       chef.vm.provision "shell",
         inline: <<-SHELL
-          yum install -y chef
-          systemctl enable chef
-          systemctl restart chef
+          echo 'hello'
         SHELL
     end
     config.vm.define "node1" do |node1|
