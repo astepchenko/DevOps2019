@@ -18,16 +18,16 @@ Vagrant.configure("2") do |config|
         yum install -y git
       
         # install Chef Server Standalone
-        rpm -Uvh /vagrant/chef-server-core-12.19.31-1.el7.x86_64.rpm
+        rpm -Uvh https://packages.chef.io/files/stable/chef-server/12.19.31/el/7/chef-server-core-12.19.31-1.el7.x86_64.rpm
         chef-server-ctl reconfigure 
         
-        # install Chef Server Standalone WebGUI
-        # chef-server-ctl install chef-manage 
-        # chef-server-ctl reconfigure
-        # chef-manage-ctl reconfigure 
+        # install Chef Manage UI
+        chef-server-ctl install chef-manage 
+        chef-server-ctl reconfigure
+        chef-manage-ctl reconfigure --accept-license
         
         # install and configure ChefDK
-        rpm -Uvh /vagrant/chefdk-3.8.14-1.el7.x86_64.rpm
+        rpm -Uvh https://packages.chef.io/files/stable/chefdk/3.8.14/el/7/chefdk-3.8.14-1.el7.x86_64.rpm
         echo 'eval "$(chef shell-init bash)"' >> /home/vagrant/.bashrc
         echo 'export PATH="/opt/chefdk/embedded/bin:$PATH"' >> /home/vagrant/.bashrc && source /home/vagrant/.bashrc
         chef generate repo chef-repo
