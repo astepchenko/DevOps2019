@@ -8,11 +8,6 @@ Vagrant.configure("2") do |config|
   config.vm.define "node1" do |node1|
     node1.vm.network :private_network, ip: "192.168.0.11"
     node1.vm.hostname = "node1"
-    node1.vm.provision "shell",
-      inline: <<-SHELL
-        sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
-        systemctl restart sshd
-      SHELL
   end
 
   config.vm.define "chef" do |chef|
@@ -38,7 +33,7 @@ Vagrant.configure("2") do |config|
         chef generate repo chef-repo
         mkdir -p /home/vagrant/chef-repo/.chef
         echo '.chef' >> /home/vagrant/chef-repo/.gitignore
-        chef-server-ctl user-create vagrant Chef Admin vagrant@chef.io 'vagrant' --filename /home/vagrant/chef-repo/.chef/vagrant.pem
+        chef-server-ctl user-create vagrant Chef Admin vagrant@vagrant 'vagrant' --filename /home/vagrant/chef-repo/.chef/vagrant.pem
         chef-server-ctl org-create chef 'Chef' --association_user vagrant --filename /home/vagrant/chef-repo/.chef/chef-validator.pem
         cp /vagrant/knife.rb /home/vagrant/chef-repo/.chef/
         cd /home/vagrant/chef-repo
@@ -55,6 +50,8 @@ Vagrant.configure("2") do |config|
       grep -q "192.168.0.11 node1" /etc/hosts || echo "192.168.0.11 node1" | tee -a /etc/hosts > /dev/null
       echo "=== $(hostname) /etc/hosts ==="
       cat /etc/hosts
+      sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+      systemctl restart sshd
     SHELL
 
-end
+  end
