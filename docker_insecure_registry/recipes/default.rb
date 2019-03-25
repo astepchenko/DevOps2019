@@ -4,8 +4,9 @@
 #
 # Copyright:: 2019, The Authors, All Rights Reserved.
 
-# Install and start docker
+# Install, configure and start docker
 docker_service 'default' do
+  insecure_registry 'localhost:5000'
   action [:create, :start]
 end
 
@@ -28,12 +29,6 @@ end
 docker_image 'registry' do
   tag '2'
   action :pull
-end
-
-# Add insecure registry to docker
-docker_service 'default' do
-  insecure_registry 'localhost:5000'
-  action [:create, :start]
 end
 
 # Start insecure registry
