@@ -5,9 +5,14 @@ Vagrant.configure("2") do |config|
     vb.memory = "1024"
   end
   
-  config.vm.define "node1" do |node1|
-    node1.vm.network :private_network, ip: "192.168.0.11"
-    node1.vm.hostname = "node1"
+  config.vm.define "blue" do |blue|
+    blue.vm.network :private_network, ip: "192.168.0.11"
+    blue.vm.hostname = "blue"
+  end
+
+  config.vm.define "green" do |green|
+    green.vm.network :private_network, ip: "192.168.0.11"
+    green.vm.hostname = "green"
   end
 
   config.vm.define "chef" do |chef|
@@ -47,7 +52,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell",
     inline: <<-SHELL
       grep -q "192.168.0.10 chef" /etc/hosts || echo "192.168.0.10 chef" | tee -a /etc/hosts > /dev/null
-      grep -q "192.168.0.11 node1" /etc/hosts || echo "192.168.0.11 node1" | tee -a /etc/hosts > /dev/null
+      grep -q "192.168.0.11 blue" /etc/hosts || echo "192.168.0.11 blue" | tee -a /etc/hosts > /dev/null
+      grep -q "192.168.0.12 green" /etc/hosts || echo "192.168.0.12 green" | tee -a /etc/hosts > /dev/null
       echo "=== $(hostname) /etc/hosts ==="
       cat /etc/hosts
       sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
