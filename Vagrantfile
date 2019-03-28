@@ -45,7 +45,8 @@ Vagrant.configure("2") do |config|
         knife ssl fetch
         knife ssl check
         knife client list
-        knife bootstrap 192.168.0.11 -N node1 -x vagrant -P vagrant --sudo
+        knife bootstrap 192.168.0.11 -N blue -x vagrant -P vagrant --sudo
+        knife bootstrap 192.168.0.12 -N green -x vagrant -P vagrant --sudo
       SHELL
   end
 
