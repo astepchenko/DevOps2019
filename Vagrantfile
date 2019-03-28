@@ -1,23 +1,29 @@
 Vagrant.configure("2") do |config|
 
   config.vm.box = "centos/7"
-  config.vm.provider :virtualbox do |vb|
-    vb.memory = "1024"
-  end
   
   config.vm.define "blue" do |blue|
     blue.vm.network :private_network, ip: "192.168.0.11"
     blue.vm.hostname = "blue"
+    blue.vm.provider :virtualbox do |vb|
+      vb.memory = "512"
+    end
   end
 
   config.vm.define "green" do |green|
-    green.vm.network :private_network, ip: "192.168.0.11"
+    green.vm.network :private_network, ip: "192.168.0.12"
     green.vm.hostname = "green"
+    green.vm.provider :virtualbox do |vb|
+      vb.memory = "512"
+    end
   end
 
   config.vm.define "chef" do |chef|
     chef.vm.network :private_network, ip: "192.168.0.10"
     chef.vm.hostname = "chef"
+    chef.vm.provider :virtualbox do |vb|
+      vb.memory = "1024"
+    end
     chef.vm.provision "shell",
       inline: <<-SHELL
         yum install -y git
@@ -38,7 +44,7 @@ Vagrant.configure("2") do |config|
         chef generate repo chef-repo
         mkdir -p /home/vagrant/chef-repo/.chef
         echo '.chef' >> /home/vagrant/chef-repo/.gitignore
-        chef-server-ctl user-create vagrant Chef Admin vagrant@vagrant 'vagrant' --filename /home/vagrant/chef-repo/.chef/vagrant.pem
+        chef-server-ctl user-create vagrant Chef Admin vagrant@chef.io 'vagrant' --filename /home/vagrant/chef-repo/.chef/vagrant.pem
         chef-server-ctl org-create chef 'Chef' --association_user vagrant --filename /home/vagrant/chef-repo/.chef/chef-validator.pem
         cp /vagrant/knife.rb /home/vagrant/chef-repo/.chef/
         cd /home/vagrant/chef-repo
