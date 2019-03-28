@@ -26,14 +26,21 @@ Vagrant.configure("2") do |config|
     end
     chef.vm.provision "shell",
       inline: <<-SHELL
-        yum install -y git
+        yum install -y git java-1.8.0-openjdk-devel
+
+        # install Jenkins
+        curl --silent --location http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo | tee /etc/yum.repos.d/jenkins.repo
+        rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
+        yum install -y jenkins
+        systemctl enable jenkins
+        systemctl restart jenkins
       
         # install Chef Server Standalone
         rpm -Uvh https://packages.chef.io/files/stable/chef-server/12.19.31/el/7/chef-server-core-12.19.31-1.el7.x86_64.rpm
-        chef-server-ctl reconfigure 
+        chef-server-ctl reconfigure
         
         # install Chef Manage UI
-        chef-server-ctl install chef-manage 
+        chef-server-ctl install chef-manage
         chef-server-ctl reconfigure
         chef-manage-ctl reconfigure --accept-license
         
