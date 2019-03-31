@@ -2,18 +2,10 @@ Vagrant.configure("2") do |config|
 
   config.vm.box = "centos/7"
   
-  config.vm.define "blue" do |blue|
-    blue.vm.network :private_network, ip: "192.168.0.11"
-    blue.vm.hostname = "blue"
-    blue.vm.provider :virtualbox do |vb|
-      vb.memory = "512"
-    end
-  end
-
-  config.vm.define "green" do |green|
-    green.vm.network :private_network, ip: "192.168.0.12"
-    green.vm.hostname = "green"
-    green.vm.provider :virtualbox do |vb|
+  config.vm.define "node" do |node|
+    node.vm.network :private_network, ip: "192.168.0.11"
+    node.vm.hostname = "node"
+    node.vm.provider :virtualbox do |vb|
       vb.memory = "512"
     end
   end
@@ -58,16 +50,14 @@ Vagrant.configure("2") do |config|
         knife ssl fetch
         knife ssl check
         knife client list
-        knife bootstrap 192.168.0.11 -N blue -x vagrant -P vagrant --sudo
-        knife bootstrap 192.168.0.12 -N green -x vagrant -P vagrant --sudo
+        knife bootstrap 192.168.0.11 -N node -x vagrant -P vagrant --sudo
       SHELL
   end
 
   config.vm.provision "shell",
     inline: <<-SHELL
       grep -q "192.168.0.10 chef" /etc/hosts || echo "192.168.0.10 chef" | tee -a /etc/hosts > /dev/null
-      grep -q "192.168.0.11 blue" /etc/hosts || echo "192.168.0.11 blue" | tee -a /etc/hosts > /dev/null
-      grep -q "192.168.0.12 green" /etc/hosts || echo "192.168.0.12 green" | tee -a /etc/hosts > /dev/null
+      grep -q "192.168.0.11 node" /etc/hosts || echo "192.168.0.11 node" | tee -a /etc/hosts > /dev/null
       echo "=== $(hostname) /etc/hosts ==="
       cat /etc/hosts
       sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
