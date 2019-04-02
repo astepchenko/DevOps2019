@@ -65,6 +65,7 @@ Vagrant.configure("2") do |config|
         knife ssl check
         knife client list
         knife bootstrap 192.168.0.11 -N node -x vagrant -P vagrant --sudo
+        chown -R vagrant:vagrant /home/vagrant
 
         # configure Jenkins
         mkdir /var/lib/jenkins/init.groovy.d

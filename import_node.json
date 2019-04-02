@@ -1,0 +1,13 @@
+{
+  "name": "node",
+  "chef_environment": "deploy",
+  "run_list": [
+  "recipe[blue_green]"
+]
+,
+  "normal": {
+    "tags": [
+
+    ]
+  }
+}
