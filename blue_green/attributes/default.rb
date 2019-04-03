@@ -1,1 +1,1 @@
-default['ver'] = '1.0.21'
+default['ver'] = '1.0.22'
