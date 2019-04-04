@@ -2,7 +2,7 @@
   "name": "deploy",
   "description": "The blue-green deploy environment",
   "cookbook_versions": {
-    "blue_green": "= 0.1.21"
+    "blue_green": "= 0.1.22"
   },
   "json_class": "Chef::Environment",
   "chef_type": "environment",
