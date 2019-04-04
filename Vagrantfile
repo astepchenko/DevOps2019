@@ -10,16 +10,7 @@ Vagrant.configure("2") do |config|
     end
     node.vm.provision "shell",
       inline: <<-SHELL
-        yum install -y yum-utils
-        yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-        yum -y install docker-ce
-        systemctl enable docker
-        systemctl restart docker
-        usermod -aG docker vagrant
-        cp /vagrant/daemon.json /etc/docker/daemon.json
-        systemctl restart docker
-        docker pull mate:5000/greeter:1.0.21
-        docker pull mate:5000/greeter:1.0.22
+        echo 'node created'
       SHELL
   end
 
