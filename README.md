@@ -21,6 +21,7 @@ nano ~/chef-repo/cookbooks/blue_green/test/integration/default/default_test.rb
 Environment **deploy**
 ```
 knife environment create deploy -d --description "The blue-green deploy environment"
+knife environment from file environments/deploy.json
 knife environment list -w
 knife environment show deploy
 knife node environment set node deploy
