@@ -4,6 +4,19 @@
 #
 # Copyright:: 2019, The Authors, All Rights Reserved.
 
+# Install, configure and start docker
+docker_service 'default' do
+  insecure_registry 'mate:5000'
+  action [:create, :start]
+end
+
+# Append vagrant user to docker group
+group 'docker' do
+  action :modify
+  members 'vagrant'
+  append true
+end  
+
 # Pull greeter image
 docker_image 'greeter' do
   repo 'mate:5000/greeter'
