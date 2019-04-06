@@ -43,12 +43,12 @@ choco install nuget.commandline -y
 
 ## Build app
 ```
-cd C:\Users\Administrator\Documents\DevOps2019
+cd C:\DevOps2019
 dotnet publish --framework netcoreapp2.0
 ```
 
 ## Run app
 ```
-cd C:\Users\Administrator\Documents\DevOps2019\samples\MusicStore\bin\Debug\netcoreapp2.0
+cd C:\DevOps2019\samples\MusicStore\bin\Debug\netcoreapp2.0\publish
 dotnet MusicStore.dll
 ```
