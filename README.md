@@ -18,3 +18,37 @@ This repository is a test application used for ASP.NET Core internal test proces
 It is not intended to be a representative sample of how to use ASP.NET Core.
 
 Samples and docs for ASP.NET Core can be found here: <https://docs.asp.net>.
+
+
+First of all change server name to **SERVER**
+
+## Install choco
+```
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+```
+
+## Install packages
+```
+choco install dotnetcore-sdk --version 2.0 -y
+choco install dotnetfx -y
+choco install sql-server-express -y
+choco install sql-server-management-studio -y
+choco install octopusdeploy -y
+choco install octopusdeploy.tentacle -y
+choco install octopustools -y
+choco install jenkins -y
+choco install git -y
+choco install nuget.commandline -y
+```
+
+## Build app
+```
+cd C:\Users\Administrator\Documents\DevOps2019
+dotnet publish --framework netcoreapp2.0
+```
+
+## Run app
+```
+cd C:\Users\Administrator\Documents\DevOps2019\samples\MusicStore\bin\Debug\netcoreapp2.0
+dotnet MusicStore.dll
+```
