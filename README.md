@@ -38,17 +38,17 @@ choco install octopusdeploy.tentacle -y
 choco install octopustools -y
 choco install jenkins -y
 choco install git -y
-choco install nuget.commandline -y
 ```
 
 ## Build app
 ```
-cd C:\DevOps2019
 dotnet publish --framework netcoreapp2.0
+octo pack .\samples\MusicStore\bin\Debug\netcoreapp2.0\publish --id=MusicStore --format=Zip --version=0.0.1
+octo push --package MusicStore.0.0.1.zip --replace-existing --server http://localhost --apiKey API-OYYHRF0SLURPH4JGJALFODDW3FY
 ```
 
 ## Run app
 ```
-cd C:\DevOps2019\samples\MusicStore\bin\Debug\netcoreapp2.0\publish
+cd .\samples\MusicStore\bin\Debug\netcoreapp2.0\publish
 dotnet MusicStore.dll
 ```
