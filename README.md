@@ -42,9 +42,10 @@ choco install git -y
 
 ## Build app
 ```
-dotnet publish --framework netcoreapp2.0
-octo pack .\samples\MusicStore\bin\Debug\netcoreapp2.0\publish --id=MusicStore --format=Zip --version=0.0.1
+dotnet publish --framework netcoreapp2.0 --output app
+octo pack app --id=MusicStore --format=Zip --version=0.0.1 --basePath=.\samples\MusicStore\app
 octo push --package MusicStore.0.0.1.zip --replace-existing --server http://localhost --apiKey API-OYYHRF0SLURPH4JGJALFODDW3FY
+octo create-release --project MusicStore Project --server http://localhost --apiKey API-OYYHRF0SLURPH4JGJALFODDW3FY
 ```
 
 ## Run app
