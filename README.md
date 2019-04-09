@@ -19,7 +19,7 @@ It is not intended to be a representative sample of how to use ASP.NET Core.
 
 Samples and docs for ASP.NET Core can be found here: <https://docs.asp.net>.
 
-## Deploy process
+## Deploying MusicStore app via Octopus
 
 ![It works!](https://github.com/astepchenko/DevOps2019/blob/task5/stuff/deploy.gif)
 
