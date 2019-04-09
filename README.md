@@ -19,15 +19,18 @@ It is not intended to be a representative sample of how to use ASP.NET Core.
 
 Samples and docs for ASP.NET Core can be found here: <https://docs.asp.net>.
 
+## Deploy process
 
-First of all change server name to **SERVER**
+![It works!](https://github.com/astepchenko/DevOps2019/blob/task5/stuff/deploy.gif)
 
-## Install choco
+## Useful commands
+
+### Install choco
 ```
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 ```
 
-## Install packages
+### Install packages
 ```
 choco install dotnetcore-sdk --version 2.0 -y
 choco install dotnetfx -y
@@ -40,7 +43,7 @@ choco install jenkins -y
 choco install git -y
 ```
 
-## Build app
+### Build app
 ```
 dotnet publish --framework netcoreapp2.0 --output app
 octo pack app --id=MusicStore --format=Zip --version=0.0.1 --basePath=.\samples\MusicStore\app
@@ -48,7 +51,7 @@ octo push --package MusicStore.0.0.1.zip --replace-existing --server http://loca
 octo create-release --project MusicStore Project --server http://localhost --apiKey API-OYYHRF0SLURPH4JGJALFODDW3FY
 ```
 
-## Run app
+### Run app
 ```
 cd .\samples\MusicStore\bin\Debug\netcoreapp2.0\publish
 dotnet MusicStore.dll
