@@ -1,3 +1,3 @@
-output "elb_dns_name" {
-  value = "${aws_elb.lb.dns_name}"
+output "lb_dns_name" {
+  value = "${aws_lb.frontend.dns_name}"
 }
