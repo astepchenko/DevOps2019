@@ -69,6 +69,7 @@ resource "aws_autoscaling_group" "asg" {
   max_size = 3
   health_check_grace_period = 30
   health_check_type = "ELB"
+  default_cooldown = 30
   force_delete = true
 }
 
