@@ -29,7 +29,7 @@ resource "aws_launch_configuration" "lc" {
   key_name = "${var.key_name}"
   user_data = <<-EOF
               #!/bin/bash
-              echo "Module 11" > index.html
+              echo "$(hostname -f)" > index.html
               nohup busybox httpd -f -p 8080 &
               EOF
   lifecycle {
@@ -41,8 +41,8 @@ resource "aws_autoscaling_group" "asg" {
   name = "asg"
   launch_configuration = "${aws_launch_configuration.lc.id}"
   availability_zones = ["${data.aws_availability_zones.all.names}"]
-  min_size = 1
-  max_size = 2
+  min_size = 3
+  max_size = 5
   load_balancers = ["${aws_elb.lb.name}"]
   health_check_type = "ELB"
   tag {
