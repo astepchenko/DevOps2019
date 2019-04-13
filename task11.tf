@@ -77,6 +77,7 @@ resource "aws_lb" "frontend" {
   name = "frontend"
   internal = false
   load_balancer_type = "application"
+  idle_timeout = 10
   security_groups = ["${aws_security_group.lb.id}"]
   subnets = ["${aws_default_subnet.2a.id}","${aws_default_subnet.2b.id}"]
 }
